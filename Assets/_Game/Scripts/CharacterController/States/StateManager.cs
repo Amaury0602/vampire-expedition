@@ -119,6 +119,12 @@ namespace Player
             if (CurrentState != null && !IsLocked)
                 CurrentState.UpdateState(dt);
         }
+
+        public void FixedUpdate(float dt)
+        {
+            if (CurrentState != null && !IsLocked)
+                CurrentState.FixedUpdateState(dt);
+        }
         
         public void ClearEvents()
         {
