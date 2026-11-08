@@ -110,7 +110,7 @@ namespace Units
         private DamageInfo CreateDamageInfo(UnitController target)
         {
             Vector2 direction = (target.Hitbox.Center - _controller.Hitbox.Center).normalized;
-            return new DamageInfo(Weapon.Damage, direction, Weapon.DamageTypes, _controller.gameObject);
+            return new DamageInfo(Weapon.Damage, direction, Weapon.DamageTypes, Weapon.KnockbackPower, _controller.gameObject);
         }
 
         public void CancelAttack()

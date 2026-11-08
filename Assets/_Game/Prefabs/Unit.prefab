@@ -415,6 +415,7 @@ GameObject:
   - component: {fileID: 3810227456190375101}
   - component: {fileID: 3810227456190375102}
   - component: {fileID: 3810227456190375103}
+  - component: {fileID: 3810227456190375104}
   m_Layer: 6
   m_Name: Unit
   m_TagString: Untagged
@@ -529,6 +530,9 @@ MonoBehaviour:
       m_Bits: 64
     SeparationRadius: 1.25
     SeparationWeight: 2
+  <Combat>k__BackingField:
+    <Team>k__BackingField: 0
+  _knockbackDuration: 0.2
   <StateManager>k__BackingField:
     _currentStateName: 
     Initialized: 0
@@ -585,39 +589,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Units.UnitAnimator
   _controller: {fileID: 6844706268386493150}
   _animator: {fileID: 5456321772100347424}
---- !u!1 &8968026092004928852
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1873230664628809306}
-  m_Layer: 6
-  m_Name: Sword
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1873230664628809306
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8968026092004928852}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.083590806, w: 0.9965002}
-  m_LocalPosition: {x: 0.499, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 2272046898982509174}
-  - {fileID: 7792648320192746205}
-  m_Father: {fileID: 6200622133061876234}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -9.59}
 --- !u!114 &3810227456190375101
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,3 +632,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Items.Equipment
   <Items>k__BackingField:
   - {fileID: 11400000, guid: 2462fdf0007346c48364beaa3690790f, type: 2}
+--- !u!114 &3810227456190375104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7619301057969920844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efc1931c706255144a0ecef83d3c6f9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Units.UnitVisualFeedback
+  _health: {fileID: 3810227456190375101}
+  _renderers:
+  - {fileID: 6500242184143282010}
+  - {fileID: 7849331698885481702}
+  - {fileID: 6418630836213884510}
+  _blinkColor: {r: 1, g: 1, b: 1, a: 1}
+  _blinkDuration: 0.1
+  _blinkCount: 2
+--- !u!1 &8968026092004928852
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1873230664628809306}
+  m_Layer: 6
+  m_Name: Sword
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1873230664628809306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8968026092004928852}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: -0.083590806, w: 0.9965002}
+  m_LocalPosition: {x: 0.499, y: 1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 2272046898982509174}
+  - {fileID: 7792648320192746205}
+  m_Father: {fileID: 6200622133061876234}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -9.59}
