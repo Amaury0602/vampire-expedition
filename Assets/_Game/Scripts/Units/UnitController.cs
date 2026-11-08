@@ -15,12 +15,15 @@ namespace Units
         [field: SerializeField] public MovementInfo MovementInfo { get; private set; } = new MovementInfo();
 
         public Rigidbody2D Rigidbody { get; private set; }
+        public UnitSeparation Separation { get; private set; }
 
         private void Awake()
         {
             Rigidbody = GetComponent<Rigidbody2D>();
             Rigidbody.gravityScale = 0f;
             Rigidbody.freezeRotation = true;
+
+            Separation = new UnitSeparation(Rigidbody, NavigationSettings, MovementSettings);
 
             StateManager.AddState(new UnitIdleState(this));
             StateManager.AddState(new UnitMoveToTargetState(this));

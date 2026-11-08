@@ -19,6 +19,9 @@ namespace Units
 
         public void SetTargetPosition(Vector2 position)
         {
+            if (NavMesh.SamplePosition(position, out NavMeshHit hit, SampleRadius, NavMesh.AllAreas))
+                position = hit.position;
+
             _targetPosition = position;
             _cornerCount = 0;
             _repathTimer = 0f;
@@ -47,7 +50,8 @@ namespace Units
         {
             base.FixedUpdateState(dt);
 
-            Controller.Steer(ComputeDesiredVelocity());
+            Vector2 desired = ComputeDesiredVelocity() + Controller.Separation.Compute();
+            Controller.Steer(Vector2.ClampMagnitude(desired, Controller.MovementSettings.MaxSpeed));
         }
 
         private void Repath()
@@ -57,8 +61,6 @@ namespace Units
 
             if (NavMesh.SamplePosition(from, out NavMeshHit fromHit, SampleRadius, NavMesh.AllAreas))
                 from = fromHit.position;
-            if (NavMesh.SamplePosition(to, out NavMeshHit toHit, SampleRadius, NavMesh.AllAreas))
-                to = toHit.position;
 
             if (NavMesh.CalculatePath(from, to, NavMesh.AllAreas, _path) &&
                 _path.status != NavMeshPathStatus.PathInvalid)
