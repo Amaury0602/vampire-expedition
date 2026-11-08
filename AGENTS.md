@@ -16,6 +16,8 @@ Consulter ce dossier avant toute décision de game design ou feature gameplay.
 
 Ne pas utiliser `unity` CLI, sauf pour compiler.
 
+Toujours recompiler avec `unity` CLI après chaque modification de script.
+
 ## Conventions de code
 
 - Pas de commentaires ni de `/// <summary>` dans les scripts.
