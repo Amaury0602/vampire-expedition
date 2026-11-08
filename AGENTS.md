@@ -33,3 +33,5 @@ public float Acceleration => _acceleration;
 // Oui
 [field: SerializeField] public float Acceleration { get; private set; } = 20f;
 ```
+
+- Exception ScriptableObject : les données sont des champs publics simples (`public string Name;`, `public float Damage;`), sans propriété ni `[field: SerializeField]`.

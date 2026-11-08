@@ -6,6 +6,7 @@ namespace Units
     {
         private static readonly int IDLE_PROPERTY = Animator.StringToHash("Idle");
         private static readonly int MOVEP_ROPERTY = Animator.StringToHash("Move");
+        private static readonly int ATTACK_PROPERTY = Animator.StringToHash("Attack");
 
         [SerializeField] private UnitController _controller;
         [SerializeField] private Animator _animator;
@@ -22,6 +23,9 @@ namespace Units
             _controller.StateManager.GetState<UnitIdleState>().Exited += OnIdleExited;
             _controller.StateManager.GetState<UnitMoveToTargetState>().Entered += OnMoveEntered;
             _controller.StateManager.GetState<UnitMoveToTargetState>().Exited += OnMoveExited;
+            _controller.StateManager.GetState<UnitChaseState>().Entered += OnMoveEntered;
+            _controller.StateManager.GetState<UnitChaseState>().Exited += OnMoveExited;
+            _controller.Combat.AttackStarted += OnAttackStarted;
 
             _animator.SetBool(IDLE_PROPERTY, _controller.StateManager.CurrentState is UnitIdleState);
             _animator.SetBool(MOVEP_ROPERTY, _controller.StateManager.CurrentState is UnitMoveToTargetState);
@@ -33,6 +37,19 @@ namespace Units
             _controller.StateManager.GetState<UnitIdleState>().Exited -= OnIdleExited;
             _controller.StateManager.GetState<UnitMoveToTargetState>().Entered -= OnMoveEntered;
             _controller.StateManager.GetState<UnitMoveToTargetState>().Exited -= OnMoveExited;
+            _controller.StateManager.GetState<UnitChaseState>().Entered -= OnMoveEntered;
+            _controller.StateManager.GetState<UnitChaseState>().Exited -= OnMoveExited;
+            _controller.Combat.AttackStarted -= OnAttackStarted;
+        }
+
+        public void AttackHit()
+        {
+            _controller.Combat.Hit();
+        }
+
+        private void OnAttackStarted()
+        {
+            _animator.SetTrigger(ATTACK_PROPERTY);
         }
 
         private void OnIdleEntered()

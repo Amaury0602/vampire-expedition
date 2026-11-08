@@ -27,6 +27,16 @@ namespace Units
             _repathTimer = 0f;
         }
 
+        protected void UpdateTargetPosition(Vector2 position)
+        {
+            _targetPosition = position;
+        }
+
+        protected virtual void OnTargetReached()
+        {
+            StateManager.SetState<UnitIdleState>();
+        }
+
         public override void UpdateState(float dt)
         {
             base.UpdateState(dt);
@@ -34,7 +44,7 @@ namespace Units
             float distance = Vector2.Distance(Controller.Rigidbody.position, _targetPosition);
             if (distance <= Controller.NavigationSettings.StopDistance)
             {
-                StateManager.SetState<UnitIdleState>();
+                OnTargetReached();
                 return;
             }
 
