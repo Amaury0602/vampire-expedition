@@ -1,14 +1,10 @@
 using System;
-using System.Collections.Generic;
-using Battle;
-using UnityEngine;
 
 namespace Units
 {
     public class UnitSensor
     {
         private const float TickInterval = 0.25f;
-        private const float SwitchSqrRatio = 0.81f;
 
         private readonly UnitController _controller;
         private float _timer;
@@ -37,45 +33,7 @@ namespace Units
 
         public void Scan()
         {
-            Battlefield battlefield = _controller.Combat.Battlefield;
-            if (battlefield == null)
-            {
-                SetTarget(null);
-                return;
-            }
-
-            IReadOnlyList<UnitController> enemies = battlefield.GetEnemies(_controller.Combat.Team);
-            Vector2 position = _controller.Rigidbody.position;
-
-            UnitController closest = null;
-            float closestSqrDistance = float.MaxValue;
-
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                UnitController enemy = enemies[i];
-                if (!UnitCombat.IsValidTarget(enemy))
-                {
-                    continue;
-                }
-
-                float sqrDistance = (enemy.Rigidbody.position - position).sqrMagnitude;
-                if (sqrDistance < closestSqrDistance)
-                {
-                    closestSqrDistance = sqrDistance;
-                    closest = enemy;
-                }
-            }
-
-            if (closest != null && closest != Target && UnitCombat.IsValidTarget(Target))
-            {
-                float currentSqrDistance = (Target.Rigidbody.position - position).sqrMagnitude;
-                if (closestSqrDistance > currentSqrDistance * SwitchSqrRatio)
-                {
-                    return;
-                }
-            }
-
-            SetTarget(closest);
+            SetTarget(Targeting.FindTarget(_controller, Target));
         }
 
         public void Clear()

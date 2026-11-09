@@ -59,7 +59,27 @@ namespace Pooling
             }
 
             pooled.CancelDelayedRelease();
+
+            if (pooled.OwnerPool == null)
+            {
+                ReleaseUnowned(pooled);
+                return;
+            }
+
             pooled.OwnerPool.Release(pooled);
+        }
+
+        private static void ReleaseUnowned(PooledObject pooled)
+        {
+            Debug.LogWarning($"[Pooler] Release('{pooled.name}') : instance sans pool (posée dans la scène ?). Désactivée au lieu d'être recyclée, utiliser Pooler.Get pour l'instancier.", pooled);
+
+            IPoolable[] poolables = pooled.GetComponentsInChildren<IPoolable>(true);
+            for (int i = 0; i < poolables.Length; i++)
+            {
+                poolables[i].OnRelease();
+            }
+
+            pooled.gameObject.SetActive(false);
         }
 
         public static void Release(GameObject instance, float delay)

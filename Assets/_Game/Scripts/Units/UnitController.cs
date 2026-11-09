@@ -1,3 +1,4 @@
+using System;
 using Damages;
 using Items;
 using Player;
@@ -19,6 +20,7 @@ namespace Units
         [field: Header("Combat")]
         [field: SerializeField] public UnitCombat Combat { get; private set; } = new UnitCombat();
         [SerializeField] private float _knockbackDuration = 0.2f;
+        [SerializeField] private float _deathDuration = 2f;
 
         [field: Header("Debug")]
         [field: SerializeField] public StateManager StateManager { get; private set; } = new StateManager();
@@ -34,6 +36,9 @@ namespace Units
         {
             get { return _knockbackTimer > 0f; }
         }
+        public bool IsDead { get; private set; }
+
+        public event Action Died;
 
         private float _knockbackTimer;
 
@@ -58,11 +63,17 @@ namespace Units
             StateManager.AddState(new UnitMoveToTargetState(this));
             StateManager.AddState(new UnitChaseState(this));
             StateManager.AddState(new UnitAttackState(this));
+            StateManager.AddState(new UnitDeadState(this));
             StateManager.Initialize<UnitIdleState>();
         }
 
         private void Update()
         {
+            if (IsDead)
+            {
+                return;
+            }
+
             float dt = Time.deltaTime;
 
             Combat.Update(dt);
@@ -73,6 +84,11 @@ namespace Units
 
         private void FixedUpdate()
         {
+            if (IsDead)
+            {
+                return;
+            }
+
             if (_knockbackTimer > 0f)
             {
                 _knockbackTimer -= Time.fixedDeltaTime;
@@ -104,7 +120,7 @@ namespace Units
 
         public void MoveToTarget(Vector2 position)
         {
-            if (UnitCombat.IsValidTarget(Sensor.Target))
+            if (IsDead || Targeting.IsValidTarget(Sensor.Target))
             {
                 return;
             }
@@ -126,6 +142,8 @@ namespace Units
 
         public void OnGet()
         {
+            IsDead = false;
+            Rigidbody.simulated = true;
             Health.Fill();
             Combat.ResetCombat();
             Sensor.Clear();
@@ -158,7 +176,7 @@ namespace Units
 
         private void UpdateCombatTransition()
         {
-            if (!UnitCombat.IsValidTarget(Sensor.Target))
+            if (!Targeting.IsValidTarget(Sensor.Target))
             {
                 return;
             }
@@ -177,17 +195,19 @@ namespace Units
 
         private void Die()
         {
+            IsDead = true;
             Combat.Leave();
             Combat.ResetCombat();
             Sensor.Clear();
+            StateManager.SetState<UnitDeadState>();
 
-            if (TryGetComponent(out PooledObject _))
-            {
-                Pooler.Release(gameObject);
-                return;
-            }
+            Rigidbody.linearVelocity = Vector2.zero;
+            Rigidbody.simulated = false;
+            _knockbackTimer = 0f;
 
-            gameObject.SetActive(false);
+            Died?.Invoke();
+
+            Pooler.Release(gameObject, _deathDuration);
         }
 
         private void UpdateMovementInfo()

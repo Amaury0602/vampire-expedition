@@ -7,6 +7,7 @@ namespace Units
         private static readonly int IDLE_PROPERTY = Animator.StringToHash("Idle");
         private static readonly int MOVEP_ROPERTY = Animator.StringToHash("Move");
         private static readonly int ATTACK_PROPERTY = Animator.StringToHash("Attack");
+        private static readonly int DIE_PROPERTY = Animator.StringToHash("Die");
 
         [SerializeField] private UnitController _controller;
         [SerializeField] private Animator _animator;
@@ -26,6 +27,7 @@ namespace Units
             _controller.StateManager.GetState<UnitChaseState>().Entered += OnMoveEntered;
             _controller.StateManager.GetState<UnitChaseState>().Exited += OnMoveExited;
             _controller.Combat.AttackStarted += OnAttackStarted;
+            _controller.Died += OnDied;
 
             _animator.SetBool(IDLE_PROPERTY, _controller.StateManager.CurrentState is UnitIdleState);
             _animator.SetBool(MOVEP_ROPERTY, _controller.StateManager.CurrentState is UnitMoveToTargetState);
@@ -40,6 +42,13 @@ namespace Units
             _controller.StateManager.GetState<UnitChaseState>().Entered -= OnMoveEntered;
             _controller.StateManager.GetState<UnitChaseState>().Exited -= OnMoveExited;
             _controller.Combat.AttackStarted -= OnAttackStarted;
+            _controller.Died -= OnDied;
+        }
+
+        private void OnDied()
+        {
+            _animator.ResetTrigger(ATTACK_PROPERTY);
+            _animator.SetTrigger(DIE_PROPERTY);
         }
 
         public void AttackHit()

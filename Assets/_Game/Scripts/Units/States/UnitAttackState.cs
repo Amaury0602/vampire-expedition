@@ -11,7 +11,7 @@ namespace Units
             base.UpdateState(dt);
 
             UnitController target = Controller.Sensor.Target;
-            if (!UnitCombat.IsValidTarget(target))
+            if (!Targeting.IsValidTarget(target))
             {
                 StateManager.SetState<UnitIdleState>();
                 return;

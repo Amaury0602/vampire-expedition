@@ -2,6 +2,8 @@ using System;
 using Battle;
 using Damages;
 using Items;
+using Pooling;
+using Projectiles;
 using UnityEngine;
 
 namespace Units
@@ -67,14 +69,12 @@ namespace Units
 
         public bool IsInRange(UnitController target)
         {
-            if (Weapon == null || !IsValidTarget(target))
+            if (Weapon == null)
             {
                 return false;
             }
 
-            Vector2 offset = target.Hitbox.Center - _controller.Hitbox.Center;
-            float reach = Weapon.Range + target.Hitbox.Radius;
-            return offset.sqrMagnitude <= reach * reach;
+            return Targeting.IsInRange(_controller, target, Weapon.Range);
         }
 
         public void StartAttack(UnitController target)
@@ -99,12 +99,27 @@ namespace Units
 
             IsAttacking = false;
 
-            if (IsInRange(AttackTarget))
+            if (Weapon is RangedWeapon rangedWeapon)
+            {
+                Shoot(rangedWeapon, AttackTarget);
+            }
+            else if (IsInRange(AttackTarget))
             {
                 AttackTarget.Health.TakeDamage(CreateDamageInfo(AttackTarget));
             }
 
             AttackTarget = null;
+        }
+
+        private void Shoot(RangedWeapon weapon, UnitController target)
+        {
+            if (weapon.Projectile == null || !Targeting.IsValidTarget(target))
+            {
+                return;
+            }
+
+            Projectile projectile = Pooler.Get(weapon.Projectile, _controller.Hitbox.Center, Quaternion.identity);
+            projectile.Launch(target, weapon.ProjectileSpeed, weapon.Damage, weapon.DamageTypes, weapon.KnockbackPower, _controller.gameObject);
         }
 
         private DamageInfo CreateDamageInfo(UnitController target)
@@ -123,11 +138,6 @@ namespace Units
         {
             CancelAttack();
             _cooldown = 0f;
-        }
-
-        public static bool IsValidTarget(UnitController target)
-        {
-            return target != null && target.isActiveAndEnabled && !target.Health.IsEmpty;
         }
     }
 }
