@@ -1,25 +1,21 @@
+using Menus;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Sequences
 {
     public static class SequenceProvider
     {
-        //public static Sequence LoadLevelSequence(
-        //    int buildIndex,
-        //    Game.GameConfig config,
-        //    Scene? unloadScene = null,
-        //    string subSceneName = null)
-        //{
-        //    Sequence sequence = new Sequence(new LoadLevelContext())
-        //        .Add(new LoadSceneHandler(buildIndex))
-        //        .Add(new SetActiveSceneHandler())
-        //        .Add(new LoadSubSceneHandler(subSceneName))
-        //        .Add(new ActionHandler(() => GameStatic.Init(config)))
-        //        .Add(new UnloadSceneHandler(unloadScene.Value))
-        //        .Add(new InitEntitiesWorld());
+        public static Sequence BootSequence(MenuDatabase menuDatabase, Transform menuRoot, int gameSceneBuildIndex)
+        {
+            Sequence sequence = new Sequence(new LoadLevelContext())
+                .Add(new InitMenusHandler(menuDatabase, menuRoot))
+                .Add(new LoadSceneHandler(gameSceneBuildIndex))
+                .Add(new SetActiveSceneHandler())
+                .Add(new InitGameHandler());
 
-        //    return sequence;
-        //}
+            return sequence;
+        }
     }
 
     public class LoadLevelContext : SequenceContext

@@ -14,6 +14,11 @@ namespace Units
         [field: SerializeField] public Team Team { get; private set; }
 
         public Battlefield Battlefield { get; private set; }
+
+        public CombatClock Clock
+        {
+            get { return _controller.Clock; }
+        }
         public UnitController AttackTarget { get; private set; }
         public bool IsAttacking { get; private set; }
 
@@ -41,6 +46,7 @@ namespace Units
         {
             Battlefield = battlefield;
             Team = team;
+            _controller.AttachClock(battlefield.Clock);
         }
 
         public void Leave()
@@ -51,6 +57,7 @@ namespace Units
             }
 
             Battlefield = null;
+            _controller.StopTicking();
         }
 
         public void Update(float dt)

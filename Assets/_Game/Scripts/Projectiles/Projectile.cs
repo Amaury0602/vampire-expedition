@@ -1,3 +1,5 @@
+using Battle;
+using Core;
 using Damages;
 using Pooling;
 using Units;
@@ -24,6 +26,7 @@ namespace Projectiles
         private GameObject _source;
         private bool _isFlying;
         private float _traveled;
+        private CombatClock _clock;
 
         private Vector3 _shadowBaseScale;
         private Color _shadowBaseColor;
@@ -45,7 +48,12 @@ namespace Projectiles
             }
         }
 
-        private void Update()
+        private void OnDestroy()
+        {
+            SetClock(null);
+        }
+
+        private void OnTicked(float dt)
         {
             if (!_isFlying)
             {
@@ -59,7 +67,7 @@ namespace Projectiles
 
             Vector2 position = transform.position;
             Vector2 offset = _targetPosition - position;
-            float step = _speed * Time.deltaTime;
+            float step = _speed * dt;
 
             if (offset.sqrMagnitude <= step * step)
             {
@@ -83,6 +91,12 @@ namespace Projectiles
 
         public void Launch(UnitController target, float speed, float damage, DamageType damageTypes, float knockbackPower, GameObject source)
         {
+            SetClock(Game.Level != null ? Game.Level.Clock : null);
+            if (_clock == null)
+            {
+                Debug.LogWarning($"[Projectile] '{name}' launched without CombatClock.", this);
+            }
+
             _target = target;
             _targetPosition = target.Hitbox.Center;
             _speed = speed;
@@ -114,10 +128,26 @@ namespace Projectiles
 
         public void OnRelease()
         {
+            SetClock(null);
             _isFlying = false;
             _target = null;
             _source = null;
             ApplyHeight(0f);
+        }
+
+        private void SetClock(CombatClock clock)
+        {
+            if (_clock != null)
+            {
+                _clock.Ticked -= OnTicked;
+            }
+
+            _clock = clock;
+
+            if (_clock != null)
+            {
+                _clock.Ticked += OnTicked;
+            }
         }
 
         private void Impact(Vector2 direction)

@@ -15,15 +15,18 @@ namespace Core
             IsInitialized = false;
         }
 
-        public static void Init(Level level)
+        public static void Init()
         {
-            if (level == null)
+            Level = Object.FindAnyObjectByType<Level>();
+
+            if (Level == null)
             {
-                Debug.LogError("[Game] Init called with a null Level.");
+                Debug.LogError("[Game] Init : no Level found in loaded scenes.");
+                IsInitialized = false;
                 return;
             }
 
-            Level = level;
+            Level.Init();
             IsInitialized = true;
         }
     }

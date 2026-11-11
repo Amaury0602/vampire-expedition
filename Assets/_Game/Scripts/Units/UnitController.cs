@@ -1,4 +1,7 @@
 using System;
+using System.Threading;
+using Battle;
+using Cysharp.Threading.Tasks;
 using Damages;
 using Items;
 using Player;
@@ -37,8 +40,12 @@ namespace Units
             get { return _knockbackTimer > 0f; }
         }
         public bool IsDead { get; private set; }
+        public CombatClock Clock { get; private set; }
 
         public event Action Died;
+        public event Action<CombatClock> ClockChanged;
+
+        private bool _isTicking;
 
         private float _knockbackTimer;
 
@@ -67,14 +74,67 @@ namespace Units
             StateManager.Initialize<UnitIdleState>();
         }
 
-        private void Update()
+        public void AttachClock(CombatClock clock)
+        {
+            if (clock == null)
+            {
+                Debug.LogWarning($"[UnitController] '{name}' joined a battlefield without CombatClock.", this);
+            }
+
+            if (Clock != clock)
+            {
+                DetachClock();
+                Clock = clock;
+                ClockChanged?.Invoke(Clock);
+            }
+
+            StartTicking();
+        }
+
+        public void DetachClock()
+        {
+            StopTicking();
+
+            if (Clock == null)
+            {
+                return;
+            }
+
+            Clock = null;
+            ClockChanged?.Invoke(null);
+        }
+
+        public void StopTicking()
+        {
+            if (!_isTicking || Clock == null)
+            {
+                _isTicking = false;
+                return;
+            }
+
+            Clock.Ticked -= OnTicked;
+            Clock.FixedTicked -= OnFixedTicked;
+            _isTicking = false;
+        }
+
+        private void StartTicking()
+        {
+            if (_isTicking || Clock == null)
+            {
+                return;
+            }
+
+            Clock.Ticked += OnTicked;
+            Clock.FixedTicked += OnFixedTicked;
+            _isTicking = true;
+        }
+
+        private void OnTicked(float dt)
         {
             if (IsDead)
             {
                 return;
             }
-
-            float dt = Time.deltaTime;
 
             Combat.Update(dt);
             Sensor.Update(dt);
@@ -82,7 +142,7 @@ namespace Units
             StateManager.Update(dt);
         }
 
-        private void FixedUpdate()
+        private void OnFixedTicked(float dt)
         {
             if (IsDead)
             {
@@ -91,15 +151,16 @@ namespace Units
 
             if (_knockbackTimer > 0f)
             {
-                _knockbackTimer -= Time.fixedDeltaTime;
+                _knockbackTimer -= dt;
             }
 
-            StateManager.FixedUpdate(Time.fixedDeltaTime);
+            StateManager.FixedUpdate(dt);
             UpdateMovementInfo();
         }
 
         private void OnDestroy()
         {
+            DetachClock();
             Health.Emptied -= OnHealthEmptied;
             Health.Damaged -= OnDamaged;
             StateManager.ClearEvents();
@@ -152,6 +213,7 @@ namespace Units
 
         public void OnRelease()
         {
+            DetachClock();
             Combat.ResetCombat();
             Sensor.Clear();
             Rigidbody.linearVelocity = Vector2.zero;
@@ -195,6 +257,7 @@ namespace Units
 
         private void Die()
         {
+            CombatClock clock = Clock;
             IsDead = true;
             Combat.Leave();
             Combat.ResetCombat();
@@ -207,7 +270,31 @@ namespace Units
 
             Died?.Invoke();
 
-            Pooler.Release(gameObject, _deathDuration);
+            if (clock != null)
+            {
+                ReleaseAfterDeathAsync(clock, this.GetCancellationTokenOnDestroy()).Forget();
+            }
+            else
+            {
+                Pooler.Release(gameObject, _deathDuration);
+            }
+        }
+
+        private async UniTaskVoid ReleaseAfterDeathAsync(CombatClock clock, CancellationToken token)
+        {
+            try
+            {
+                await clock.Delay(_deathDuration, token);
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            if (IsDead && isActiveAndEnabled)
+            {
+                Pooler.Release(gameObject);
+            }
         }
 
         private void UpdateMovementInfo()

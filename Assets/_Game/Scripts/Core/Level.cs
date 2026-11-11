@@ -10,5 +10,13 @@ namespace Core
         [field: SerializeField] public CombatClock Clock { get; private set; }
         [field: SerializeField] public ManaPool Mana { get; private set; }
         [field: SerializeField] public SkillCaster SkillCaster { get; private set; }
+
+        public void Init()
+        {
+            if (Mana != null)
+            {
+                Mana.Init();
+            }
+        }
     }
 }

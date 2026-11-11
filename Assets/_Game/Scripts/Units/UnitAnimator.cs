@@ -1,3 +1,4 @@
+using Battle;
 using UnityEngine;
 
 namespace Units
@@ -11,6 +12,8 @@ namespace Units
 
         [SerializeField] private UnitController _controller;
         [SerializeField] private Animator _animator;
+
+        private CombatClock _clock;
 
         private void Reset()
         {
@@ -28,6 +31,8 @@ namespace Units
             _controller.StateManager.GetState<UnitChaseState>().Exited += OnMoveExited;
             _controller.Combat.AttackStarted += OnAttackStarted;
             _controller.Died += OnDied;
+            _controller.ClockChanged += OnClockChanged;
+            OnClockChanged(_controller.Clock);
 
             _animator.SetBool(IDLE_PROPERTY, _controller.StateManager.CurrentState is UnitIdleState);
             _animator.SetBool(MOVEP_ROPERTY, _controller.StateManager.CurrentState is UnitMoveToTargetState);
@@ -43,6 +48,36 @@ namespace Units
             _controller.StateManager.GetState<UnitChaseState>().Exited -= OnMoveExited;
             _controller.Combat.AttackStarted -= OnAttackStarted;
             _controller.Died -= OnDied;
+            _controller.ClockChanged -= OnClockChanged;
+            OnClockChanged(null);
+        }
+
+        private void OnClockChanged(CombatClock clock)
+        {
+            if (_clock != null)
+            {
+                _clock.ScaleChanged -= OnScaleChanged;
+            }
+
+            _clock = clock;
+
+            if (_clock != null)
+            {
+                _clock.ScaleChanged += OnScaleChanged;
+                OnScaleChanged(_clock.Scale);
+            }
+            else
+            {
+                OnScaleChanged(1f);
+            }
+        }
+
+        private void OnScaleChanged(float scale)
+        {
+            if (_animator != null)
+            {
+                _animator.speed = scale;
+            }
         }
 
         private void OnDied()

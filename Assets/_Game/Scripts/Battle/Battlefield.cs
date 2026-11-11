@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Units;
 using UnityEngine;
@@ -6,6 +7,7 @@ namespace Battle
 {
     public class Battlefield : MonoBehaviour
     {
+        [field: SerializeField] public CombatClock Clock { get; private set; }
         [SerializeField] private List<UnitController> _playerUnits = new List<UnitController>();
         [SerializeField] private List<UnitController> _otherUnits = new List<UnitController>();
 
@@ -18,6 +20,9 @@ namespace Battle
         {
             get { return _otherUnits; }
         }
+
+        public event Action<UnitController> UnitJoined;
+        public event Action<UnitController> UnitRemoved;
 
         private void Start()
         {
@@ -34,12 +39,18 @@ namespace Battle
             }
 
             unit.Combat.Join(this, team);
+            UnitJoined?.Invoke(unit);
         }
 
         public void Remove(UnitController unit)
         {
-            _playerUnits.Remove(unit);
-            _otherUnits.Remove(unit);
+            bool removed = _playerUnits.Remove(unit);
+            removed |= _otherUnits.Remove(unit);
+
+            if (removed)
+            {
+                UnitRemoved?.Invoke(unit);
+            }
         }
 
         public IReadOnlyList<UnitController> GetEnemies(Team team)
@@ -73,6 +84,7 @@ namespace Battle
                 }
 
                 units[i].Combat.Join(this, team);
+                UnitJoined?.Invoke(units[i]);
             }
         }
     }
