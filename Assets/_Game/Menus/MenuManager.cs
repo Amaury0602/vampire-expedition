@@ -44,11 +44,6 @@ namespace Menus
 
                 Menu instance = UnityEngine.Object.Instantiate(prefab, parent);
                 Type type = instance.GetType();
-#if UNITY_EDITOR
-                instance.gameObject.name = $"{type}";
-#endif
-
-
 
                 if (_menus.ContainsKey(type))
                 {
