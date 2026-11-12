@@ -47,15 +47,18 @@ Ne pas modifier les scènes/prefabs via le CLI : lister les manipulations édite
 - Classe statique, point d'accès aux systèmes clés.
 - `Game.Init()` (appelé par `InitGameHandler` après chargement de la scène Game) : `FindAnyObjectByType<Level>()` puis `Level.Init()`. Pas d'auto-enregistrement du Level.
 - `Game.Level` : MonoBehaviour `Core.Level`, référence les systèmes du niveau (`Battlefield`, `Clock`, `Mana`, `SkillCaster`). `Level.Init()` initialise ses systèmes (ex. `Mana.Init()`).
-- `Game.Level` est `null` pendant `Awake`/`OnEnable` des objets de la scène : les systèmes du niveau s'initialisent dans leur `Init()`, appelé par `Level.Init()`.
+- `Game.Level` est `null` pendant `Awake`/`OnEnable` des objets de la scène : les systèmes du niveau s'initialisent dans leur `Init()`, appelé par `Level.Init()` (ordre : `Clock`, `Mana`, `SkillCaster`, `Battlefield`).
+- Pas de références croisées sérialisées entre systèmes du niveau : seul `Level` les référence, les autres y accèdent directement via `Game.Level.X` (pas de cache en champ privé).
+- Exception : objets poolés (`Projectile`, `SkillFx`) gardent l'horloge à laquelle ils sont abonnés, car le Pooler survit au Level.
 - Système propre au niveau → propriété sérialisée sur `Level`. Système global → propriété statique sur `Game`, initialisée dans `Game.Init`, remise à zéro dans `ResetStatics`.
 - Pas de namespace `Game` (conflit avec la classe) : utiliser `Core`.
 
 ### Temps de combat (`Battle/CombatClock`)
 - Le gameplay de combat n'utilise jamais `Time.deltaTime` / `Update` Unity : s'abonner à `CombatClock.Ticked` / `FixedTicked` (dt déjà multiplié par la vitesse, 0 en pause).
 - Physique 2D en mode `Script`, simulée par l'horloge.
+- L'horloge ne tourne qu'après `Level.Init()` (`Clock.Init()`) : rien ne tick avant `Game.Init`.
 - Principe : chaque script s'abonne lui-même à l'horloge (`Game.Level.Clock`) dans son `Init()` (systèmes du niveau) ou au lancement (objets poolés), et se désabonne dans `OnDestroy`/`OnRelease`. Pas d'horloge passée en paramètre.
-- Exception unités : horloge reçue au `Combat.Join` via `Battlefield.Clock` (`UnitController.AttachClock`), event `ClockChanged` pour `UnitAnimator`/`UnitVisualFeedback`.
+- Exception unités : horloge reçue au `Combat.Join` via `Battlefield.Clock` (= `Game.Level.Clock`, `UnitController.AttachClock`), event `ClockChanged` pour `UnitAnimator`/`UnitVisualFeedback`.
 - Délais gameplay : `await clock.Delay(seconds, token)` (UniTask).
 - Animator : `speed = clock.Scale` ; tweens PrimeTween : `timeScale = clock.Scale`.
 - Inputs et UI restent en temps réel (fonctionnent en pause).

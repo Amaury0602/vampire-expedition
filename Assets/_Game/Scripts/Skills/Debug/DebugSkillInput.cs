@@ -22,13 +22,15 @@ namespace Skills
                 return;
             }
 
-            TryCast(keyboard.f1Key, 0);
-            TryCast(keyboard.f2Key, 1);
-            TryCast(keyboard.f3Key, 2);
-            TryCast(keyboard.f4Key, 3);
+            bool levelUp = keyboard.shiftKey.isPressed;
+
+            TryUse(keyboard.f1Key, 0, levelUp);
+            TryUse(keyboard.f2Key, 1, levelUp);
+            TryUse(keyboard.f3Key, 2, levelUp);
+            TryUse(keyboard.f4Key, 3, levelUp);
         }
 
-        private void TryCast(KeyControl key, int index)
+        private void TryUse(KeyControl key, int index, bool levelUp)
         {
             if (!key.wasPressedThisFrame)
             {
@@ -43,6 +45,14 @@ namespace Skills
             }
 
             SkillSlot slot = slots[index];
+            if (levelUp)
+            {
+                int next = slot.Level >= slot.Settings.MaxLevel ? 1 : slot.Level + 1;
+                slot.SetLevel(next);
+                Debug.Log($"[DebugSkillInput] '{slot.Settings.Name}' level {slot.Level}/{slot.Settings.MaxLevel}.");
+                return;
+            }
+
             if (!_caster.BeginCast(slot))
             {
                 Debug.Log($"[DebugSkillInput] Cannot cast '{slot.Settings.Name}' ({slot.Owner.Name}).");

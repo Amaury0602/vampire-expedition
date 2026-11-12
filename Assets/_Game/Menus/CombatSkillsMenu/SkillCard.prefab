@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79a3a16a7e39a9e4a8f6caf1615a96ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkillCard
+  _icon: {fileID: 5989403173680225850}
+  _manaCostText: {fileID: 2557398525228473242}
 --- !u!1 &5766014755838451921
 GameObject:
   m_ObjectHideFlags: 0

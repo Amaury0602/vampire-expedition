@@ -6,6 +6,12 @@ namespace Skills
     [Serializable]
     public abstract class SkillEffect
     {
-        public abstract void Apply(SkillContext context, UnitController target);
+        public virtual void OnCast(SkillContext context)
+        {
+        }
+
+        public virtual void Apply(SkillContext context, UnitController target)
+        {
+        }
     }
 }

@@ -16,10 +16,11 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Targeting: 2
   TargetFilter: 2
-  ManaCost: 5
-  Radius: 2
-  Effects:
-  - rid: 1000
+  Levels:
+  - ManaCost: 5
+    Radius: 2
+    Effects:
+    - rid: 1000
   references:
     version: 2
     RefIds:

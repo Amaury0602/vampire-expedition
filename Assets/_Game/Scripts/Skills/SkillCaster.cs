@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Battle;
 using Characters;
+using Core;
 using Units;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,8 +11,6 @@ namespace Skills
 {
     public class SkillCaster : MonoBehaviour
     {
-        [SerializeField] private Battlefield _battlefield;
-        [SerializeField] private ManaPool _mana;
         [SerializeField] private SkillTargetingPreview _preview;
         [SerializeField] private Camera _camera;
 
@@ -46,35 +45,45 @@ namespace Skills
             }
         }
 
-        private void OnEnable()
+        public void Init()
         {
-            if (_battlefield == null)
+            Unsubscribe();
+
+            Battlefield battlefield = Game.Level.Battlefield;
+            if (battlefield == null)
             {
+                Debug.LogWarning("[SkillCaster] No Battlefield available on Game.Level.", this);
                 return;
             }
 
-            _battlefield.UnitJoined += OnUnitJoined;
-            _battlefield.UnitRemoved += OnUnitRemoved;
+            battlefield.UnitJoined += OnUnitJoined;
+            battlefield.UnitRemoved += OnUnitRemoved;
 
-            IReadOnlyList<UnitController> units = _battlefield.PlayerUnits;
+            IReadOnlyList<UnitController> units = battlefield.PlayerUnits;
             for (int i = 0; i < units.Count; i++)
             {
-                if (units[i] != null && units[i].Combat.Battlefield == _battlefield)
+                if (units[i] != null && units[i].Combat.Battlefield == battlefield)
                 {
                     OnUnitJoined(units[i]);
                 }
             }
         }
 
-        private void OnDisable()
+        private void OnDestroy()
         {
-            if (_battlefield != null)
+            Unsubscribe();
+            CancelCast();
+        }
+
+        private void Unsubscribe()
+        {
+            if (Game.Level == null || Game.Level.Battlefield == null)
             {
-                _battlefield.UnitJoined -= OnUnitJoined;
-                _battlefield.UnitRemoved -= OnUnitRemoved;
+                return;
             }
 
-            CancelCast();
+            Game.Level.Battlefield.UnitJoined -= OnUnitJoined;
+            Game.Level.Battlefield.UnitRemoved -= OnUnitRemoved;
         }
 
         private void Update()
@@ -117,12 +126,18 @@ namespace Skills
 
         public bool CanCast(SkillSlot slot)
         {
-            if (slot == null || slot.Settings == null || slot.Owner == null || _mana == null)
+            if (slot == null || slot.Settings == null || slot.Owner == null || Game.Level == null || Game.Level.Mana == null || Game.Level.Battlefield == null)
             {
                 return false;
             }
 
-            return Targeting.IsValidTarget(slot.Owner.Controller) && _mana.Has(slot.Settings.ManaCost);
+            SkillLevel data = slot.Data;
+            if (data == null)
+            {
+                return false;
+            }
+
+            return Targeting.IsValidTarget(slot.Owner.Controller) && Game.Level.Mana.Has(data.ManaCost);
         }
 
         public bool BeginCast(SkillSlot slot)
@@ -181,52 +196,45 @@ namespace Skills
 
             if (settings.Targeting == SkillTargeting.Area)
             {
-                if (_preview != null)
-                {
-                    _preview.ShowArea(position, settings.Radius, true);
-                }
-
+                _preview.ShowArea(position, _currentSlot.Data.Radius, true);
                 return true;
             }
 
             targetUnit = FindUnitAt(position, caster, settings.TargetFilter);
 
-            if (_preview != null)
-            {
-                if (targetUnit != null)
-                {
-                    _preview.ShowUnit(targetUnit, true);
-                }
-                else
-                {
-                    _preview.ShowCursor(position);
-                }
-            }
+            if (targetUnit != null)
+                _preview.ShowUnit(targetUnit, true);
+            else
+                _preview.ShowCursor(position);
 
             return targetUnit != null;
         }
 
         private void Execute(SkillSlot slot, UnitController targetUnit, Vector2 position)
         {
-            SkillSettings settings = slot.Settings;
+            SkillLevel data = slot.Data;
 
             _context.Clear();
-            _context.Settings = settings;
+            _context.Settings = slot.Settings;
+            _context.LevelData = data;
+            _context.Level = slot.Level;
             _context.Caster = slot.Owner.Controller;
             _context.TargetUnit = targetUnit;
             _context.Position = position;
 
             CollectTargets(_context);
 
-            _mana.Lose(settings.ManaCost);
+            Game.Level.Mana.Lose(data.ManaCost);
 
-            for (int i = 0; i < settings.Effects.Count; i++)
+            for (int i = 0; i < data.Effects.Count; i++)
             {
-                SkillEffect effect = settings.Effects[i];
+                SkillEffect effect = data.Effects[i];
                 if (effect == null)
                 {
                     continue;
                 }
+
+                effect.OnCast(_context);
 
                 for (int j = 0; j < _context.Targets.Count; j++)
                 {
@@ -261,8 +269,8 @@ namespace Skills
                 return;
             }
 
-            CollectFrom(_battlefield.PlayerUnits, context);
-            CollectFrom(_battlefield.OtherUnits, context);
+            CollectFrom(Game.Level.Battlefield.PlayerUnits, context);
+            CollectFrom(Game.Level.Battlefield.OtherUnits, context);
         }
 
         private void CollectFrom(IReadOnlyList<UnitController> units, SkillContext context)
@@ -277,7 +285,7 @@ namespace Skills
                     continue;
                 }
 
-                if (settings.Targeting == SkillTargeting.Area && !IsInArea(unit, context.Position, settings.Radius))
+                if (settings.Targeting == SkillTargeting.Area && !IsInArea(unit, context.Position, context.Radius))
                 {
                     continue;
                 }
@@ -291,8 +299,8 @@ namespace Skills
             UnitController closest = null;
             float closestSqrDistance = float.MaxValue;
 
-            FindClosestIn(_battlefield.PlayerUnits, position, caster, filter, ref closest, ref closestSqrDistance);
-            FindClosestIn(_battlefield.OtherUnits, position, caster, filter, ref closest, ref closestSqrDistance);
+            FindClosestIn(Game.Level.Battlefield.PlayerUnits, position, caster, filter, ref closest, ref closestSqrDistance);
+            FindClosestIn(Game.Level.Battlefield.OtherUnits, position, caster, filter, ref closest, ref closestSqrDistance);
 
             return closest;
         }
@@ -341,14 +349,10 @@ namespace Skills
         private void OnUnitJoined(UnitController unit)
         {
             if (unit.Combat.Team != Team.Player || !unit.TryGetComponent(out Hero hero) || hero.Settings == null)
-            {
                 return;
-            }
 
             if (HasSlots(hero))
-            {
                 return;
-            }
 
             List<SkillSettings> skills = hero.Settings.Skills;
             for (int i = 0; i < skills.Count; i++)

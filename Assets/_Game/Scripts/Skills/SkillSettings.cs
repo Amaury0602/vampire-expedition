@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Skills
@@ -10,8 +9,26 @@ namespace Skills
         public Sprite Icon;
         public SkillTargeting Targeting = SkillTargeting.Instant;
         public SkillTargetFilter TargetFilter = SkillTargetFilter.Enemies;
-        [Min(0f)] public float ManaCost = 1f;
-        [Min(0f)] public float Radius = 1f;
-        [SerializeReference] public List<SkillEffect> Effects = new List<SkillEffect>();
+        public SkillLevel[] Levels = { new SkillLevel() };
+
+        public int MaxLevel
+        {
+            get { return Mathf.Max(1, Levels != null ? Levels.Length : 0); }
+        }
+
+        public int ClampLevel(int level)
+        {
+            return Mathf.Clamp(level, 1, MaxLevel);
+        }
+
+        public SkillLevel GetLevel(int level)
+        {
+            if (Levels == null || Levels.Length == 0)
+            {
+                return null;
+            }
+
+            return Levels[ClampLevel(level) - 1];
+        }
     }
 }

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Menus.MenuDatabase
   _menuPrefabs:
   - {fileID: 3483212169902365916, guid: 1a4e7c8c4c2b9ae42ba153381632bcc9, type: 3}
+  - {fileID: 7962991937822717293, guid: 774e76107011a904cb5e35dbaaa935b3, type: 3}

@@ -1,5 +1,4 @@
 using System;
-using Battle;
 using Core;
 using Stats;
 using UnityEngine;
@@ -25,8 +24,6 @@ namespace Skills
 
         public event Action<float, float> Changed;
         public event Action Emptied;
-
-        private CombatClock _clock;
 
         private void Awake()
         {
@@ -55,17 +52,17 @@ namespace Skills
                 return;
             }
 
-            _clock = Game.Level.Clock;
-            _clock.Ticked += OnTicked;
+            Game.Level.Clock.Ticked += OnTicked;
         }
 
         private void Unsubscribe()
         {
-            if (_clock != null)
+            if (Game.Level == null || Game.Level.Clock == null)
             {
-                _clock.Ticked -= OnTicked;
-                _clock = null;
+                return;
             }
+
+            Game.Level.Clock.Ticked -= OnTicked;
         }
 
         public void Fill()

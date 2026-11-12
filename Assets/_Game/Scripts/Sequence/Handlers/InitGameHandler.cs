@@ -9,9 +9,7 @@ namespace Sequences
             Game.Init();
 
             if (!Game.IsInitialized)
-            {
                 return;
-            }
 
             Continue();
         }

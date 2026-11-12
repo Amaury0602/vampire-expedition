@@ -15,6 +15,7 @@ namespace Battle
             get { return IsPaused ? 0f : Speed; }
         }
 
+        public bool IsRunning { get; private set; }
         public float DeltaTime { get; private set; }
         public float Time { get; private set; }
 
@@ -35,8 +36,19 @@ namespace Battle
             Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         }
 
+        public void Init()
+        {
+            IsRunning = true;
+        }
+
         private void Update()
         {
+            if (!IsRunning)
+            {
+                DeltaTime = 0f;
+                return;
+            }
+
             DeltaTime = UnityEngine.Time.deltaTime * Scale;
             Time += DeltaTime;
             Ticked?.Invoke(DeltaTime);
@@ -44,6 +56,11 @@ namespace Battle
 
         private void FixedUpdate()
         {
+            if (!IsRunning)
+            {
+                return;
+            }
+
             float step = UnityEngine.Time.fixedDeltaTime;
             _fixedAccumulator += step * Scale;
 

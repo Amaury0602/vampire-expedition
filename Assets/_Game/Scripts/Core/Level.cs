@@ -1,4 +1,5 @@
 using Battle;
+using Menus;
 using Skills;
 using UnityEngine;
 
@@ -13,10 +14,13 @@ namespace Core
 
         public void Init()
         {
-            if (Mana != null)
-            {
-                Mana.Init();
-            }
+            Clock.Init();
+            Mana.Init();
+            SkillCaster.Init();
+            Battlefield.Init();
+
+
+            MenuManager.Show<CombatSkillsMenu>();
         }
     }
 }

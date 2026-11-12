@@ -9,9 +9,9 @@ EditorBuildSettings:
     path: Assets/_Game/Scenes/Boot.unity
     guid: 71e48c83d0ccca84e8afa7636a76e92b
   - enabled: 1
-    path: Assets/_Game/Scenes/ColorSortScene.unity
-    guid: 606c1b7c4a26b7f4f86304e03de50bd4
+    path: Assets/_Game/Scenes/Game.unity
+    guid: 1eec2a53f85edde459301d7f6eba44ee
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: ed6983ca34fcf1849b26af13e8b27177, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Core;
 using Units;
 using UnityEngine;
 
@@ -7,9 +8,13 @@ namespace Battle
 {
     public class Battlefield : MonoBehaviour
     {
-        [field: SerializeField] public CombatClock Clock { get; private set; }
         [SerializeField] private List<UnitController> _playerUnits = new List<UnitController>();
         [SerializeField] private List<UnitController> _otherUnits = new List<UnitController>();
+
+        public CombatClock Clock
+        {
+            get { return Game.Level != null ? Game.Level.Clock : null; }
+        }
 
         public IReadOnlyList<UnitController> PlayerUnits
         {
@@ -24,7 +29,7 @@ namespace Battle
         public event Action<UnitController> UnitJoined;
         public event Action<UnitController> UnitRemoved;
 
-        private void Start()
+        public void Init()
         {
             JoinAll(_playerUnits, Team.Player);
             JoinAll(_otherUnits, Team.Other);
