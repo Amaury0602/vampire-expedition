@@ -12,6 +12,8 @@ namespace Skills
         [field: SerializeField] public bool StartFilled { get; private set; }
         [field: SerializeField] public float Current { get; private set; }
 
+        public float Progress { get; private set; }
+
         public bool IsEmpty
         {
             get { return Current <= 0f; }
@@ -24,6 +26,7 @@ namespace Skills
 
         public event Action<float, float> Changed;
         public event Action Emptied;
+        public event Action<float> ProgressUpdated;
 
         private void Awake()
         {
@@ -102,12 +105,32 @@ namespace Skills
 
         private void OnTicked(float dt)
         {
-            if (IsFull || RegenPerSecond <= 0f)
+            if (IsFull || RegenPerSecond <= 0f || dt <= 0f)
             {
                 return;
             }
 
-            Gain(RegenPerSecond * dt);
+            float progress = Progress + RegenPerSecond * dt;
+            int gained = Mathf.FloorToInt(progress);
+            progress -= gained;
+
+            if (gained > 0)
+            {
+                SetCurrent(Current + gained);
+            }
+
+            SetProgress(IsFull ? 0f : progress);
+        }
+
+        private void SetProgress(float value)
+        {
+            float previous = Progress;
+            Progress = Mathf.Clamp01(value);
+
+            if (!Mathf.Approximately(previous, Progress))
+            {
+                ProgressUpdated?.Invoke(Progress);
+            }
         }
 
         private void SetCurrent(float value)
@@ -125,6 +148,11 @@ namespace Skills
             if (!wasEmpty && IsEmpty)
             {
                 Emptied?.Invoke();
+            }
+
+            if (IsFull)
+            {
+                SetProgress(0f);
             }
         }
     }

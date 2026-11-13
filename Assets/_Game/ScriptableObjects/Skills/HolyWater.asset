@@ -21,6 +21,7 @@ MonoBehaviour:
     Radius: 2
     Effects:
     - rid: 1000
+    - rid: 7590455740788899931
   references:
     version: 2
     RefIds:
@@ -30,3 +31,10 @@ MonoBehaviour:
         Damage: 3
         DamageTypes: 8
         KnockbackPower: 4
+    - rid: 7590455740788899931
+      type: {class: SpawnFxEffect, ns: Skills, asm: Assembly-CSharp}
+      data:
+        Prefab: {fileID: 0}
+        Anchor: 0
+        ScaleMode: 1
+        ScaleMultiplier: 1

@@ -86,6 +86,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1667206386991617239}
+  - component: {fileID: 3642019284977893733}
   m_Layer: 5
   m_Name: ManaPool
   m_TagString: Untagged
@@ -115,6 +116,20 @@ RectTransform:
   m_AnchoredPosition: {x: 100, y: 55}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0, y: 0.5}
+--- !u!114 &3642019284977893733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5427260342059017352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8780ec0b2f26394c88f93256bd86d98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ManaPoolUICounter
+  _fillBar: {fileID: 3395992752941364262}
+  _countText: {fileID: 1815447679540890558}
 --- !u!1 &6328562422758623730
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Menus.CombatSkillsMenu
   _skillCardPrefab: {fileID: 3830598527907219761, guid: ea4b2fa18d651fc4fad5a184368a7366, type: 3}
   _cardsContainer: {fileID: 373314032513937793}
+  _manaCounter: {fileID: 3642019284977893733}
 --- !u!1 &6851185207757284734
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +260,7 @@ GameObject:
   - component: {fileID: 8712338694825629908}
   - component: {fileID: 1815447679540890558}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

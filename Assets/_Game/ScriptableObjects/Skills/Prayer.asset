@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Prayer
   m_EditorClassIdentifier: Assembly-CSharp::Skills.SkillSettings
   Name: Prayer
-  Icon: {fileID: 0}
+  Icon: {fileID: 21300000, guid: ba6dc9e2bb114aa46a392528f10c13d0, type: 3}
   Targeting: 0
   TargetFilter: 1
   Levels:
