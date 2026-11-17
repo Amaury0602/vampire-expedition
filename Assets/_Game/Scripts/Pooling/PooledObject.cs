@@ -12,6 +12,7 @@ namespace Pooling
     /// </summary>
     public class PooledObject : MonoBehaviour
     {
+        [field: SerializeField, Min(1)] public int PoolSize { get; private set; } = 2;
         [field: SerializeField] public bool ReleaseOnSceneChange { get; private set; }
 
         internal GameObject Prefab { get; set; }

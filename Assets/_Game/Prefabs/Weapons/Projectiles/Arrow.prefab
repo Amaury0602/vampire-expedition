@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3355172774305840402}
   - component: {fileID: 821455641014126905}
+  - component: {fileID: 6099530971070529182}
   m_Layer: 0
   m_Name: Arrow
   m_TagString: Untagged
@@ -51,6 +52,20 @@ MonoBehaviour:
   _shadow: {fileID: 651938094472595720}
   _shadowMinScale: 0.5
   _shadowMinAlpha: 0.3
+--- !u!114 &6099530971070529182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2925067324421128906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04404170c770e654dafeb948d7d4da2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Pooling.PooledObject
+  <PoolSize>k__BackingField: 10
+  <ReleaseOnSceneChange>k__BackingField: 0
 --- !u!1 &3151184190646001153
 GameObject:
   m_ObjectHideFlags: 0

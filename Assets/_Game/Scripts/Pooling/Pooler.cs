@@ -120,6 +120,16 @@ namespace Pooling
             Clear(prefab.gameObject);
         }
 
+        public static void ClearAll()
+        {
+            foreach (Pool pool in _pools.Values)
+            {
+                pool.Clear();
+            }
+
+            _pools.Clear();
+        }
+
         private static Pool GetOrCreatePool(GameObject prefab)
         {
             if (_pools.TryGetValue(prefab, out Pool pool))

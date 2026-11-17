@@ -1,0 +1,247 @@
+{
+	"nextId": 21,
+	"tasks": [
+		{
+			"id": 1,
+			"subject": "Ciblage prioritaire au clic",
+			"status": "pending",
+			"description": "Proto 1 / session 16. Clic sur ennemi = cible prioritaire pour toute l'escouade (Sensor.ForceTarget prévu dans plans/combat.md). Indicateur visuel de la cible. Fonctionne en pause. Remplacer DebugTargetSetter.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "combat"
+			}
+		},
+		{
+			"id": 2,
+			"subject": "Gain de mana aux kills",
+			"status": "pending",
+			"description": "Session 16 : mana partagé + un peu à chaque kill pour récompenser l'élan. Hook sur mort ennemi → Game.Level.Mana.Gain.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "combat"
+			}
+		},
+		{
+			"id": 3,
+			"subject": "Critiques prévisibles (tous les N coups)",
+			"status": "pending",
+			"description": "Session 16 : peu d'aléatoire, pas de raté, crit tous les N coups, dégâts lisibles. Ajouter compteur de coups sur UnitCombat + flag crit dans DamageInfo.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "combat"
+			}
+		},
+		{
+			"id": 4,
+			"subject": "Roster proto : 4 chasseurs",
+			"status": "pending",
+			"description": "Tank, épéiste, arbalétrier, prêtre. CharacterSettings + 1 sort chacun (un mort = un sort perdu). Positions avant/arrière dans la salle (top-down).",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "content"
+			}
+		},
+		{
+			"id": 5,
+			"subject": "Ennemis proto : goule, chauve-souris, prêtre noir",
+			"status": "pending",
+			"description": "3 types d'ennemis. Prêtre noir soigne ses alliés (cible prioritaire naturelle).",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "content"
+			}
+		},
+		{
+			"id": 6,
+			"subject": "Hit-stop sur impacts lourds",
+			"status": "pending",
+			"description": "Micro-gel via CombatClock (pas Time.timeScale). Sur crits / coups lourds / sorts.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "juice"
+			}
+		},
+		{
+			"id": 7,
+			"subject": "Screen shake dosé",
+			"status": "pending",
+			"description": "Shake caméra sur impacts lourds, sorts, morts. Doit rester lisible.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "juice"
+			}
+		},
+		{
+			"id": 8,
+			"subject": "Chiffres de dégâts",
+			"status": "pending",
+			"description": "Chiffres qui sautent (poolés), gros chiffres sur crits, couleur soin. Suivent l'horloge de combat.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "juice"
+			}
+		},
+		{
+			"id": 9,
+			"subject": "Particules : sang, braises, cendres",
+			"status": "pending",
+			"description": "Sang à l'impact, cendres de vampire à la mort ennemie, éclats de pierre. Temps de combat (simulationSpeed = clock.Scale).",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "juice"
+			}
+		},
+		{
+			"id": 10,
+			"subject": "Salles + couloir (3-4 salles)",
+			"status": "pending",
+			"description": "1 zone, 3-4 salles reliées. Spawn ennemis par salle, détection salle nettoyée, escouade avance vers la salle suivante. Micro-but par salle (coffre/relique).",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "expedition"
+			}
+		},
+		{
+			"id": 11,
+			"subject": "Journal d'événements",
+			"status": "pending",
+			"description": "Session 17 : journal structuré (qui, quoi, où, quand, avec qui). Base de la Chronique, récap de mort, échos. Enregistrer dès le proto : dégâts, kills, morts, sorts, salles, extraction.",
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "memory"
+			}
+		},
+		{
+			"id": 12,
+			"subject": "Attaques ennemies télégraphiées",
+			"status": "pending",
+			"description": "Session 19 (fairness + fast/slow) : jauge de charge visible sur grosses attaques, interruptible par un sort. Au moins un moment de sort décisif par combat.",
+			"blockedBy": [
+				5
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "combat"
+			}
+		},
+		{
+			"id": 13,
+			"subject": "Ralenti dernier ennemi / mort chasseur",
+			"status": "pending",
+			"description": "Ralenti sur le dernier ennemi d'une salle et la mort d'un chasseur. Mort chasseur : zoom, ralenti, son étouffé.",
+			"blockedBy": [
+				10
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "juice"
+			}
+		},
+		{
+			"id": 14,
+			"subject": "Choix entre salles : avancer / embranchement / rentrer",
+			"status": "pending",
+			"description": "Décisions lourdes hors combat. Menu entre salles. Bouton Rentrer. Indicateur de danger avant d'entrer.",
+			"blockedBy": [
+				10
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "expedition"
+			}
+		},
+		{
+			"id": 15,
+			"subject": "Or + règle d'extraction",
+			"status": "pending",
+			"description": "Or gagné en combat/coffres (Economy existante). Rentrer = 100 %, mourir = ~30 %. Mourir coûte toujours plus que rentrer.",
+			"blockedBy": [
+				10
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "expedition"
+			}
+		},
+		{
+			"id": 16,
+			"subject": "Relique au sol à la mort",
+			"status": "pending",
+			"description": "Mort d'un chasseur = relique tombe au sol (zone/profondeur mémorisées) + sorts perdus (déjà fait). Relique persistée, récupérable par expéditions suivantes. Stats au service de l'histoire (phrase de récit).",
+			"blockedBy": [
+				10,
+				11
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "memory"
+			}
+		},
+		{
+			"id": 17,
+			"subject": "Récap de mort",
+			"status": "pending",
+			"description": "Session 19 : 'Varga est mort : 3 coups du Prêtre noir, que personne ne ciblait.' Lu depuis le journal d'événements.",
+			"blockedBy": [
+				11
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "memory"
+			}
+		},
+		{
+			"id": 18,
+			"subject": "Écran de fin d'expédition",
+			"status": "pending",
+			"description": "Résumé retour/wipe : or gardé/perdu, morts, reliques laissées/récupérées, récaps. Puis relance d'une expédition.",
+			"blockedBy": [
+				14,
+				15,
+				16,
+				17
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "expedition"
+			}
+		},
+		{
+			"id": 19,
+			"subject": "Sauvegarde entre chaque salle",
+			"status": "pending",
+			"description": "Session 19 : quitter/reprendre une expédition. Persister reliques, or, journal (SaveMaster existant).",
+			"blockedBy": [
+				14,
+				16
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "expedition"
+			}
+		},
+		{
+			"id": 20,
+			"subject": "Valider proto 1 (test de fun)",
+			"status": "pending",
+			"description": "Succès : 30 s fun en formes grises, timing des sorts + ciblage changent l'issue. Échec : tout en x4 sans sorts. Décider ensuite : lancement auto des sorts ? main de 4 en cycle ? taille escouade 4-6 ?",
+			"blockedBy": [
+				1,
+				2,
+				3,
+				4,
+				6,
+				7,
+				8,
+				9,
+				12,
+				13,
+				18
+			],
+			"metadata": {
+				"milestone": "Proto 1",
+				"area": "validation"
+			}
+		}
+	]
+}

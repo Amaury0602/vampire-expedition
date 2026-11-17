@@ -60,6 +60,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6844706268386493150, guid: b85aa89e8e802d04898a1fc004022b2b, type: 3}
+      propertyPath: <MovementSettings>k__BackingField.MaxSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
     - target: {fileID: 7619301057969920844, guid: b85aa89e8e802d04898a1fc004022b2b, type: 3}
       propertyPath: m_Name
       value: EnemyUnit

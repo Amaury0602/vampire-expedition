@@ -28,13 +28,13 @@ MonoBehaviour:
     - rid: 1000
       type: {class: DamageEffect, ns: Skills, asm: Assembly-CSharp}
       data:
-        Damage: 3
+        Damage: 5
         DamageTypes: 8
         KnockbackPower: 4
     - rid: 7590455740788899931
       type: {class: SpawnFxEffect, ns: Skills, asm: Assembly-CSharp}
       data:
-        Prefab: {fileID: 0}
+        Prefab: {fileID: 5502288428739922109, guid: c306e90ae8ff95344a063d1b5b7ab8ca, type: 3}
         Anchor: 0
         ScaleMode: 1
         ScaleMultiplier: 1

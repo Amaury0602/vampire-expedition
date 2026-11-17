@@ -12,7 +12,8 @@ namespace Sequences
                 .Add(new InitMenusHandler(menuDatabase, menuRoot))
                 .Add(new LoadSceneHandler(gameSceneBuildIndex))
                 .Add(new SetActiveSceneHandler())
-                .Add(new InitGameHandler());
+                .Add(new InitGameHandler())
+                .Add(new InitPoolsHandler());
 
             return sequence;
         }
