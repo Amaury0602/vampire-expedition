@@ -60,7 +60,10 @@ namespace Units
         {
             base.FixedUpdateState(dt);
 
-            Vector2 desired = ComputeDesiredVelocity() + Controller.Separation.Compute();
+            Vector2 pathVelocity = ComputeDesiredVelocity();
+            Controller.FaceDirection(pathVelocity);
+
+            Vector2 desired = pathVelocity + Controller.Separation.Compute();
             Controller.Steer(Vector2.ClampMagnitude(desired, Controller.MovementSettings.MaxSpeed));
         }
 

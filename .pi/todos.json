@@ -1,5 +1,5 @@
 {
-	"nextId": 21,
+	"nextId": 25,
 	"tasks": [
 		{
 			"id": 1,
@@ -242,6 +242,30 @@
 				"milestone": "Proto 1",
 				"area": "validation"
 			}
+		},
+		{
+			"id": 21,
+			"subject": "Add Facing + FacingChanged to UnitController",
+			"status": "completed",
+			"activeForm": "editing UnitController"
+		},
+		{
+			"id": 22,
+			"subject": "Call facing from move/attack states",
+			"status": "completed",
+			"activeForm": "editing states"
+		},
+		{
+			"id": 23,
+			"subject": "Create UnitFacing component with PrimeTween flip",
+			"status": "completed",
+			"activeForm": "writing UnitFacing"
+		},
+		{
+			"id": 24,
+			"subject": "Recompile and check errors",
+			"status": "completed",
+			"activeForm": "recompiling"
 		}
 	]
 }

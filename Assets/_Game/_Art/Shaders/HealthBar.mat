@@ -57,7 +57,8 @@ Material:
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _BackgroundColor: {r: 0.10196077, g: 0.10196077, b: 0.10196077, a: 0.7019608}
-    - _FillColor: {r: 1, g: 0.19999993, b: 0.19999993, a: 1}
-    - _GhostColor: {r: 1, g: 0.51886785, b: 0.51886785, a: 1}
+    - _EnemyFillColor: {r: 1, g: 0, b: 0.051475048, a: 1}
+    - _FillColor: {r: 0, g: 1, b: 0.18259192, a: 1}
+    - _GhostColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

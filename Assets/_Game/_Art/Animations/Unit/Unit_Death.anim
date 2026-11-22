@@ -83,7 +83,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
   m_PositionCurves:
   - curve:
       serializedVersion: 2
@@ -145,7 +145,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
   - curve:
       serializedVersion: 2
       m_Curve:
@@ -170,7 +170,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
   m_ScaleCurves:
   - curve:
       serializedVersion: 2
@@ -196,7 +196,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
   m_FloatCurves:
   - serializedVersion: 2
     curve:
@@ -215,7 +215,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Visuals/Unit
+    path: Facing/Visuals/Unit
     classID: 212
     script: {fileID: 0}
     flags: 0
@@ -236,7 +236,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Shadow
+    path: Facing/Shadow
     classID: 212
     script: {fileID: 0}
     flags: 0
@@ -249,7 +249,7 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 509657289
+      path: 1466302843
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -258,7 +258,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 3196963130
+      path: 3129981109
       attribute: 1
       script: {fileID: 0}
       typeID: 4
@@ -267,7 +267,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 509657289
+      path: 1466302843
       attribute: 4
       script: {fileID: 0}
       typeID: 4
@@ -276,7 +276,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 3196963130
+      path: 3129981109
       attribute: 3
       script: {fileID: 0}
       typeID: 4
@@ -285,7 +285,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 3892122688
+      path: 2289822630
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 212
@@ -294,7 +294,7 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     - serializedVersion: 2
-      path: 1926924059
+      path: 4048382793
       attribute: 3305885265
       script: {fileID: 0}
       typeID: 212
@@ -341,7 +341,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Visuals/Unit
+    path: Facing/Visuals/Unit
     classID: 212
     script: {fileID: 0}
     flags: 0
@@ -407,7 +407,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -473,7 +473,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -539,7 +539,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -614,7 +614,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.x
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -689,7 +689,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.y
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -764,7 +764,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: localEulerAnglesRaw.z
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 16
@@ -794,7 +794,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.x
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -824,7 +824,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.y
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -854,7 +854,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalPosition.z
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -884,7 +884,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.x
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -914,7 +914,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.y
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -944,7 +944,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalScale.z
-    path: Visuals/Sword/Square
+    path: Facing/Visuals/Sword/Square
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -965,7 +965,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_Enabled
-    path: Shadow
+    path: Facing/Shadow
     classID: 212
     script: {fileID: 0}
     flags: 0
@@ -978,7 +978,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -990,7 +990,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0
@@ -1002,7 +1002,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: Visuals/Sword
+    path: Facing/Visuals/Sword
     classID: 4
     script: {fileID: 0}
     flags: 0

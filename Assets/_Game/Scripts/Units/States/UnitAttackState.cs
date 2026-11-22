@@ -17,6 +17,11 @@ namespace Units
                 return;
             }
 
+            if (!Controller.Combat.IsAttacking)
+            {
+                Controller.FaceTowards(target.Rigidbody.position);
+            }
+
             bool isInRange = Controller.Combat.IsInRange(target);
             if (!isInRange)
             {

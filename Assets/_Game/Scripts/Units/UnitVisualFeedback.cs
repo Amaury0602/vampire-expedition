@@ -7,15 +7,14 @@ namespace Units
 {
     public class UnitVisualFeedback : MonoBehaviour
     {
+        private static readonly int FLASH_STEP_PROPERTY = Shader.PropertyToID("_FlashStep");
+
         [SerializeField] private Health _health;
-        [SerializeField] private SpriteRenderer[] _renderers;
+        [SerializeField] private SpriteRenderer _renderer;
 
         [Header("Blink")]
-        [SerializeField] private Color _blinkColor = Color.white;
         [SerializeField] private float _blinkDuration = 0.06f;
-        [SerializeField] private int _blinkCount = 2;
-
-        private Color[] _baseColors;
+        private Material _materialInstance;
         private Tween _tween;
         private UnitController _controller;
         private CombatClock _clock;
@@ -23,17 +22,27 @@ namespace Units
         private void Reset()
         {
             _health = GetComponentInParent<Health>();
-            _renderers = GetComponentsInChildren<SpriteRenderer>(true);
+            _renderer = GetComponentInChildren<SpriteRenderer>(true);
         }
 
         private void Awake()
         {
             _controller = GetComponentInParent<UnitController>();
 
-            _baseColors = new Color[_renderers.Length];
-            for (int i = 0; i < _renderers.Length; i++)
+            if (_renderer == null)
             {
-                _baseColors[i] = _renderers[i].color;
+                Debug.LogWarning($"[UnitVisualFeedback] '{name}' has no flash renderer.", this);
+                return;
+            }
+
+            _materialInstance = _renderer.material;
+        }
+
+        private void OnDestroy()
+        {
+            if (_materialInstance != null)
+            {
+                Destroy(_materialInstance);
             }
         }
 
@@ -104,17 +113,15 @@ namespace Units
         public void PlayHitFeedback()
         {
             StopFeedback();
-
-            int cycles = Mathf.Max(1, _blinkCount) * 2;
-            _tween = Tween.Custom(this, 0f, 1f, _blinkDuration, (target, value) => { target.ApplyBlink(value); }, Ease.Linear, cycles, CycleMode.Yoyo);
+            _tween = Tween.Custom(this, 0f, 0.75f, _blinkDuration, (target, value) => { target.ApplyBlink(value); }, Ease.Linear, 2, CycleMode.Yoyo);
             ApplyTimeScale();
         }
 
         private void ApplyBlink(float value)
         {
-            for (int i = 0; i < _renderers.Length; i++)
+            if (_materialInstance != null)
             {
-                _renderers[i].color = Color.LerpUnclamped(_baseColors[i], _blinkColor, value);
+                _materialInstance.SetFloat(FLASH_STEP_PROPERTY, value);
             }
         }
 

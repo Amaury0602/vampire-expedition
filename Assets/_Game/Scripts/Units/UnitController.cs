@@ -25,6 +25,10 @@ namespace Units
         [SerializeField] private float _knockbackDuration = 0.2f;
         [SerializeField] private float _deathDuration = 2f;
 
+        [Header("Facing")]
+        [SerializeField] private bool _faceLeftByDefault;
+        [SerializeField, Range(0f, 1f)] private float _facingDeadZone = 0.2f;
+
         [field: Header("Debug")]
         [field: SerializeField] public StateManager StateManager { get; private set; } = new StateManager();
         [field: SerializeField] public MovementInfo MovementInfo { get; private set; } = new MovementInfo();
@@ -41,8 +45,10 @@ namespace Units
         }
         public bool IsDead { get; private set; }
         public CombatClock Clock { get; private set; }
+        public int Facing { get; private set; } = 1;
 
         public event Action Died;
+        public event Action<int> FacingChanged;
         public event Action<CombatClock> ClockChanged;
 
         private bool _isTicking;
@@ -58,6 +64,7 @@ namespace Units
             Health = GetComponent<Health>();
             Hitbox = GetComponent<Hitbox>();
             Equipment = GetComponent<Equipment>();
+            Facing = GetDefaultFacing();
 
             Separation = new UnitSeparation(Rigidbody, NavigationSettings, MovementSettings);
             Combat.Initialize(this);
@@ -201,6 +208,39 @@ namespace Units
             Rigidbody.AddForce(steer * Rigidbody.mass);
         }
 
+        public void FaceDirection(Vector2 direction)
+        {
+            float magnitude = direction.magnitude;
+            if (magnitude <= 0f || Mathf.Abs(direction.x) <= _facingDeadZone * magnitude)
+            {
+                return;
+            }
+
+            int facing = direction.x > 0f ? 1 : -1;
+            if (facing == Facing)
+            {
+                return;
+            }
+
+            Facing = facing;
+            FacingChanged?.Invoke(Facing);
+        }
+
+        public void FaceTowards(Vector2 position)
+        {
+            FaceDirection(position - Rigidbody.position);
+        }
+
+        private int GetDefaultFacing()
+        {
+            if (_faceLeftByDefault)
+            {
+                return -1;
+            }
+
+            return 1;
+        }
+
         public void OnGet()
         {
             IsDead = false;
@@ -218,6 +258,7 @@ namespace Units
             Sensor.Clear();
             Rigidbody.linearVelocity = Vector2.zero;
             _knockbackTimer = 0f;
+            Facing = GetDefaultFacing();
         }
 
         public void ApplyKnockback(Vector2 direction, float power)
