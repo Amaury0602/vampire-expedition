@@ -8,9 +8,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1118892351403576245, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 17cba1be0107c594595771fd6ef5757d, type: 3}
+    - target: {fileID: 1118892351403576245, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118892351403576245, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118892351403576245, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4327770712126214051, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
       propertyPath: m_Name
-      value: EnemyUnit
+      value: MermanUnit
       objectReference: {fileID: 0}
     - target: {fileID: 6836976406102177432, guid: cf2ae345f8802cf4895fbb8032d8f07b, type: 3}
       propertyPath: m_LocalPosition.x

@@ -16,6 +16,6 @@ MonoBehaviour:
   Icon: {fileID: 0}
   Damage: 2
   DamageTypes: 1
-  KnockbackPower: 3
-  Range: 1
+  KnockbackPower: 0
+  Range: 0.7
   AttackSpeed: 1

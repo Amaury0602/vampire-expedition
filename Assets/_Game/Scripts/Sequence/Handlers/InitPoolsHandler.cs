@@ -7,6 +7,7 @@ using Pooling;
 using Skills;
 using Units;
 using UnityEngine;
+using Worlds;
 
 namespace Sequences
 {
@@ -21,17 +22,16 @@ namespace Sequences
 
         protected override void OnEnter()
         {
+            HashSet<GameObject> prefabs = new HashSet<GameObject>();
+
             Battlefield battlefield = Game.Level != null ? Game.Level.Battlefield : null;
-            if (battlefield == null)
+            if (battlefield != null)
             {
-                Debug.LogWarning("[InitPoolsHandler] No Battlefield available on Game.Level.");
-                Continue();
-                return;
+                CollectUnits(battlefield.PlayerUnits, prefabs, false);
+                CollectUnits(battlefield.OtherUnits, prefabs, false);
             }
 
-            HashSet<GameObject> prefabs = new HashSet<GameObject>();
-            CollectUnits(battlefield.PlayerUnits, prefabs);
-            CollectUnits(battlefield.OtherUnits, prefabs);
+            CollectWorld(Game.World, prefabs);
 
             foreach (GameObject prefab in prefabs)
             {
@@ -41,7 +41,25 @@ namespace Sequences
             Continue();
         }
 
-        private void CollectUnits(IReadOnlyList<UnitController> units, HashSet<GameObject> prefabs)
+        private void CollectWorld(World world, HashSet<GameObject> prefabs)
+        {
+            if (world == null)
+            {
+                return;
+            }
+
+            if (world.Roster != null)
+            {
+                CollectUnits(world.Roster.Units, prefabs, true);
+            }
+
+            if (world.Settings != null)
+            {
+                CollectUnits(world.Settings.Enemies, prefabs, true);
+            }
+        }
+
+        private void CollectUnits(IReadOnlyList<UnitController> units, HashSet<GameObject> prefabs, bool includeUnit)
         {
             for (int i = 0; i < units.Count; i++)
             {
@@ -51,7 +69,12 @@ namespace Sequences
                     continue;
                 }
 
-                CollectWeapon(unit.Equipment, prefabs);
+                if (includeUnit)
+                {
+                    prefabs.Add(unit.gameObject);
+                }
+
+                CollectWeapon(unit.GetComponent<Equipment>(), prefabs);
 
                 if (unit.TryGetComponent(out Hero hero))
                 {

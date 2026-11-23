@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c05b974d2ce7784bb714cd8874237bd, type: 3}
+  m_Name: World_0
+  m_EditorClassIdentifier: Assembly-CSharp::Worlds.WorldSettings
+  Name: Castle Gates
+  RoomCount: 5
+  Enemies:
+  - {fileID: 5758851529039278775, guid: eac3aa6796aec1640b6b8a1baf07e0ce, type: 3}
+  - {fileID: 5758851529039278775, guid: 468b692b03d2c7a40bb9405ff8c59133, type: 3}
+  MinEnemiesPerRoom: 3
+  MaxEnemiesPerRoom: 10

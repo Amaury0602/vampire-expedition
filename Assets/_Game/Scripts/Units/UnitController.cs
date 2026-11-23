@@ -261,6 +261,17 @@ namespace Units
             Facing = GetDefaultFacing();
         }
 
+        public void ResetAt(Vector2 position)
+        {
+            transform.position = position;
+            Rigidbody.position = position;
+            Rigidbody.linearVelocity = Vector2.zero;
+            _knockbackTimer = 0f;
+            Combat.ResetCombat();
+            Sensor.Clear();
+            StateManager.SetState<UnitIdleState>();
+        }
+
         public void ApplyKnockback(Vector2 direction, float power)
         {
             if (power <= 0f || direction == Vector2.zero)
@@ -311,14 +322,15 @@ namespace Units
 
             Died?.Invoke();
 
-            if (clock != null)
-            {
-                ReleaseAfterDeathAsync(clock, this.GetCancellationTokenOnDestroy()).Forget();
-            }
-            else
-            {
-                Pooler.Release(gameObject, _deathDuration);
-            }
+            //if (clock != null)
+            //{
+            //    ReleaseAfterDeathAsync(clock, this.GetCancellationTokenOnDestroy()).Forget();
+            //}
+            //else
+            //{
+            //    Pooler.Release(gameObject, _deathDuration);
+            //}
+            Pooler.Release(gameObject);
         }
 
         private async UniTaskVoid ReleaseAfterDeathAsync(CombatClock clock, CancellationToken token)

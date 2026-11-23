@@ -38,7 +38,18 @@ namespace Battle
 
         public void Init()
         {
+            Play();
+        }
+
+        public void Play()
+        {
             IsRunning = true;
+        }
+
+        public void Stop()
+        {
+            IsRunning = false;
+            DeltaTime = 0f;
         }
 
         private void Update()

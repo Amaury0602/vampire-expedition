@@ -261,6 +261,8 @@ MonoBehaviour:
   _menuDatabase: {fileID: 11400000, guid: e03b4070e1793d84fb9d0cefd7ffac08, type: 2}
   _menuRoot: {fileID: 445220618}
   _gameSceneBuildIndex: 1
+  _world: {fileID: 11400000, guid: 0f4d71c5ff88e7d4498011a474068521, type: 2}
+  _roster: {fileID: 11400000, guid: c0eccff5029c17445895bb7be91586e3, type: 2}
 --- !u!4 &1052083516
 Transform:
   m_ObjectHideFlags: 0
